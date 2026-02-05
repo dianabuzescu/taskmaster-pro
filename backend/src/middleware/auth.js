@@ -13,7 +13,6 @@ async function auth(req, res, next) {
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
-    // payload.sub = userId (pentru că noi am pus subject la sign)
     const user = await User.findById(payload.sub).select("_id email role name");
     if (!user) return res.status(401).json({ message: "User not found" });
 

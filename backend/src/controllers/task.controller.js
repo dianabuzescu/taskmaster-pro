@@ -95,7 +95,6 @@ const getTaskById = asyncHandler(async (req, res) => {
       if (key in req.body) updates[key] = req.body[key];
     }
   
-    // Validări simple
     if ("title" in updates) {
       if (!updates.title || !String(updates.title).trim()) {
         return res.status(400).json({ message: "title cannot be empty" });
@@ -113,7 +112,6 @@ const getTaskById = asyncHandler(async (req, res) => {
       if (!ok) return res.status(400).json({ message: "Invalid priority" });
     }
   
-    // Aplică updates
     Object.assign(task, updates);
     await task.save();
   
