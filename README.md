@@ -163,6 +163,24 @@ VITE_API_URL=http://localhost:4000
 
 ---
 
+## Screenshots
+
+### Login page:
+<img width="1316" height="674" alt="image" src="https://github.com/user-attachments/assets/c800b512-a30c-4d9f-be47-3aa191eaaf60" />
+
+### Register page:
+<img width="1284" height="652" alt="image" src="https://github.com/user-attachments/assets/ac18d2c7-5221-4e95-a57a-a4aebf392942" />
+
+### Tasks dashboard:
+<img width="872" height="1048" alt="image" src="https://github.com/user-attachments/assets/180f8add-b709-4e29-8e48-4273c4f3ddc5" />
+
+### Admin panel:
+<img width="1100" height="1746" alt="image" src="https://github.com/user-attachments/assets/866f63dd-425e-409a-9979-054d183747de" />
+
+
+---
+
+
 ## Purpose of the Project
 
 This project was built as a **portfolio project** to demonstrate:
