@@ -1,3 +1,4 @@
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
@@ -10,18 +11,37 @@ function signToken(userId) {
   });
 }
 
-const register = asyncHandler(async (req, res) => {
-  const { email, password, name } = req.body;
+function validateCredentials(email, password) {
+  return (
+    typeof email === "string" &&
+    email.trim().length > 0 &&
+    typeof password === "string" &&
+    password.length > 0
+  );
+}
 
-  if (!email || !password) {
-    return res.status(400).json({ message: "email and password are required" });
+const register = asyncHandler(async (req, res) => {
+  const { email, password, name } = req.body || {};
+
+  if (!validateCredentials(email, password)) {
+    return res.status(400).json({
+      message: "Valid email and password are required"
+    });
+  }
+
+  if (name !== undefined && typeof name !== "string") {
+    return res.status(400).json({
+      message: "Name must be a string"
+    });
   }
 
   const normalizedEmail = email.toLowerCase().trim();
 
   const exists = await User.findOne({ email: normalizedEmail });
   if (exists) {
-    return res.status(409).json({ message: "Email already in use" });
+    return res.status(409).json({
+      message: "Email already in use"
+    });
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
@@ -44,22 +64,30 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body || {};
 
-  if (!email || !password) {
-    return res.status(400).json({ message: "email and password are required" });
+  if (!validateCredentials(email, password)) {
+    return res.status(400).json({
+      message: "Valid email and password are required"
+    });
   }
 
   const normalizedEmail = email.toLowerCase().trim();
 
   const user = await User.findOne({ email: normalizedEmail });
+
   if (!user) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    return res.status(401).json({
+      message: "Invalid credentials"
+    });
   }
 
   const ok = await bcrypt.compare(password, user.passwordHash);
+
   if (!ok) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    return res.status(401).json({
+      message: "Invalid credentials"
+    });
   }
 
   const token = signToken(user._id);
@@ -76,16 +104,14 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const me = asyncHandler(async (req, res) => {
-    res.json({
-      user: {
-        id: req.user._id,
-        email: req.user.email,
-        role: req.user.role,
-        name: req.user.name
-      }
-    });
+  return res.json({
+    user: {
+      id: req.user._id,
+      email: req.user.email,
+      role: req.user.role,
+      name: req.user.name
+    }
   });
-  
+});
 
-  module.exports = { register, login, me };
-
+module.exports = { register, login, me };

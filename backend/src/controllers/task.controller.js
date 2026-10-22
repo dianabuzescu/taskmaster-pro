@@ -4,7 +4,7 @@ const { asyncHandler } = require("../utils/asyncHandler");
 const createTask = asyncHandler(async (req, res) => {
   const { title, description, status, priority, dueDate } = req.body;
 
-  if (!title || !title.trim()) {
+  if (typeof title !== "string" || !title.trim()) {
     return res.status(400).json({ message: "title is required" });
   }
 
